@@ -38,7 +38,7 @@ def crear_documento_pdf(buffer):
         bottomMargin=2.0*cm  # Margen inferior para el pie de página
     )
 
-def generar_pdf_optimizado(df, organizar_por_unidad=True, reporte_cumplimiento=False):
+def generar_pdf_optimizado(df, organizar_por_unidad=True, reporte_cumplimiento=False, mes=None, año=None, **kwargs):
     """
     Genera un PDF optimizado a partir de un DataFrame con datos de despliegues operativos.
     
@@ -52,6 +52,11 @@ def generar_pdf_optimizado(df, organizar_por_unidad=True, reporte_cumplimiento=F
             Defaults to True.
         reporte_cumplimiento (bool, optional): Si es True, genera un reporte de cumplimiento de servicios.
             Defaults to False.
+        mes (str, optional): Mes al que corresponden los datos (en español). Usado para el reporte de cumplimiento.
+            Defaults to None.
+        año (int, optional): Año al que corresponden los datos. Usado para el reporte de cumplimiento.
+            Defaults to None.
+        **kwargs: Parámetros adicionales que se puedan necesitar en el futuro.
         
     Returns:
         bytes: PDF generado en formato bytes, listo para ser descargado o mostrado.
@@ -87,7 +92,7 @@ def generar_pdf_optimizado(df, organizar_por_unidad=True, reporte_cumplimiento=F
     if reporte_cumplimiento:
         # Importar función para crear el reporte de cumplimiento
         from report_services import crear_reporte_cumplimiento
-        elementos.extend(crear_reporte_cumplimiento(df_completo, estilos))
+        elementos.extend(crear_reporte_cumplimiento(df_completo, estilos, mes=mes, año=año))
     # Si se organiza por unidad, crear tablas separadas para cada unidad
     elif organizar_por_unidad and 'UNIDAD' in df_completo.columns:
         # Clasificar datos por unidad

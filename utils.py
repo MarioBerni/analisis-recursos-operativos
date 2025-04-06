@@ -135,21 +135,16 @@ def leer_excel(archivo, hoja=None):
         tuple: (DataFrame, bool, str) - (datos, es_valido, mensaje_error)
     """
     try:
-        # Si no se especifica hoja, usar la primera hoja disponible
+        # Obtener todas las hojas disponibles
+        xls = pd.ExcelFile(archivo)
+        hojas_disponibles = xls.sheet_names
+        
+        # Si no se especifica hoja, usar la hoja 'OPERATIVOS' o la primera disponible
         if hoja is None:
-            # Verificar si la hoja 'OPERATIVOS' existe
-            xls = pd.ExcelFile(archivo)
-            hojas_disponibles = xls.sheet_names
-            
             if 'OPERATIVOS' in hojas_disponibles:
                 hoja = 'OPERATIVOS'
             else:
                 hoja = hojas_disponibles[0]  # Primera hoja disponible
-                
-            # Informar si no se encontró alguna hoja esperada
-            hojas_faltantes = [h for h in EXCEL_SHEETS.keys() if h not in hojas_disponibles]
-            if hojas_faltantes:
-                return None, False, f"No se encontraron las siguientes hojas esperadas: {', '.join(hojas_faltantes)}"
         
         # Leer la hoja especificada
         df = pd.read_excel(archivo, sheet_name=hoja)
@@ -172,10 +167,23 @@ def leer_excel(archivo, hoja=None):
         if mapeo_columnas:
             df = df.rename(columns=mapeo_columnas)
         
-        # Validar el DataFrame
-        es_valido, mensaje_error = validar_csv(df)
+        # Si es una hoja de día (01-31), añadir una columna con la fecha
+        if hoja in [f"{i:02d}" for i in range(1, 32)]:
+            # Extraer el día del nombre de la hoja
+            dia = int(hoja)
+            # Añadir columna de fecha (el mes y año se deben proporcionar externamente)
+            df['DIA'] = dia
         
-        return df, es_valido, mensaje_error
+        # Formatear los datos según los tipos esperados
+        df = formatear_datos(df)
+        
+        # Para hojas diarias, no validamos estrictamente las columnas
+        if hoja in [f"{i:02d}" for i in range(1, 32)]:
+            return df, True, ""
+        else:
+            # Validar el DataFrame para la hoja OPERATIVOS
+            es_valido, mensaje_error = validar_csv(df)
+            return df, es_valido, mensaje_error
     
     except Exception as e:
         return None, False, f"Error al procesar el archivo Excel: {str(e)}"
@@ -216,12 +224,29 @@ def formatear_datos(df):
         if col not in df_formateado.columns:
             df_formateado[col] = ""
     
-    # Convertir columnas numéricas a enteros donde corresponda
-    columnas_numericas = ["MOVILES", "MOTOS", "HIPO", "PP.SS EN MOVIL", "PP.SS PIE TIERRA", 
-                        "CHOQUE APOSTADO", "CHOQUE ALERTA", "GEO APOSTADO", "GEO ALERTA", "PP.SS TOTAL"]
+    # Convertir columnas numéricas a sus tipos correspondientes
+    from config import NUMERIC_COLUMNS, MULTI_VALUE_COLUMNS
     
-    for col in columnas_numericas:
+    # Procesar columnas numéricas
+    for col in NUMERIC_COLUMNS:
         if col in df_formateado.columns:
-            df_formateado[col] = pd.to_numeric(df_formateado[col], errors='coerce').fillna(0).astype(int)
+            # Las columnas de hora se mantienen como string para preservar el formato
+            if col in ["HORA INICIO", "HORA FIN"]:
+                continue
+            
+            # La columna PORCENTAJE se maneja como decimal
+            if col == "PORCENTAJE":
+                df_formateado[col] = pd.to_numeric(df_formateado[col], errors='coerce').fillna(0)
+            # El resto de columnas numéricas se convierten a enteros
+            else:
+                df_formateado[col] = pd.to_numeric(df_formateado[col], errors='coerce').fillna(0).astype(int)
+    
+    # Procesar columnas con múltiples valores
+    for col in MULTI_VALUE_COLUMNS:
+        if col in df_formateado.columns:
+            # Asegurar que los valores sean strings antes de cualquier procesamiento
+            df_formateado[col] = df_formateado[col].astype(str)
+            # Limpiar valores vacíos o 'nan'
+            df_formateado[col] = df_formateado[col].replace('nan', '').replace('None', '')
     
     return df_formateado

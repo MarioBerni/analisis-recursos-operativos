@@ -1,0 +1,23 @@
+Directory structure:
+└── marioberni-analisis-recursos-operativos/
+    ├── README.md
+    ├── app.py
+    ├── app_simple.py
+    ├── config.py
+    ├── data_utils.py
+    ├── ejemplo_despliegues.csv
+    ├── image_utils.py
+    ├── pdf_config.py
+    ├── pdf_generator.py
+    ├── pdf_header_footer.py
+    ├── pdf_styles.py
+    ├── pdf_table_utils.py
+    ├── Planilla despliegues.csv
+    ├── report_services.py
+    ├── requirements.txt
+    ├── table_elements.py
+    ├── table_styles.py
+    ├── unidades_config.py
+    ├── utils.py
+    ├── .windsurfrules
+    └── images/
