@@ -71,6 +71,9 @@ def crear_estilo_tabla_detallado(columnas_con_imagenes, estilos):
         ('ALIGN', (0, 1), (0, -1), 'LEFT'),    # Alinear a la izquierda la primera columna
         ('ALIGN', (1, 1), (-1, -1), 'CENTER'),  # Centrar el resto de datos
         
+        # Establecer altura mínima para todas las filas (excepto encabezado)
+        ('MINROWHEIGHT', (0, 1), (-1, -1), 30),  # Altura mínima de 30 puntos para filas de datos
+        
         # Estilo para el encabezado
         ('BACKGROUND', (0, 0), (-1, 0), estilos['header_bg']),
         ('TEXTCOLOR', (0, 0), (-1, 0), estilos['header_fg']),

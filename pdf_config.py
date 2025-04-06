@@ -17,7 +17,6 @@ COLUMNAS_PDF = [
     "HIPO",
     "PP.SS PIE TIERRA",
     "CHOQUE APOSTADO",
-    "CHOQUE ALERTA",
     "PP.SS TOTAL",
     "HORA INICIO",
     "HORA FIN",
@@ -41,7 +40,6 @@ COLUMNAS_IMAGENES = {
     "HIPO": "hipos.svg",
     "PP.SS PIE TIERRA": "pieTierra.svg",
     "CHOQUE APOSTADO": "choqueApostado.svg",
-    "CHOQUE ALERTA": "choqueEnAlerta.svg",
     "PP.SS TOTAL": "ppssTotal.svg"
 }
 
@@ -58,7 +56,6 @@ ANCHOS_COLUMNAS = [
     1.5*cm,   # HIPO
     1.5*cm,   # PP.SS PIE TIERRA
     1.5*cm,   # CHOQUE APOSTADO
-    1.5*cm,   # CHOQUE ALERTA
     1.5*cm,   # PP.SS TOTAL
     1.8*cm,   # HORA INICIO
     1.8*cm,   # HORA FIN

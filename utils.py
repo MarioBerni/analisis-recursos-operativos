@@ -245,8 +245,10 @@ def formatear_datos(df):
     # Procesar columnas numéricas
     for col in NUMERIC_COLUMNS:
         if col in df_formateado.columns:
-            # Las columnas de hora se mantienen como string para preservar el formato
+            # Las columnas de hora se formatean para mostrar solo hora y minutos (HH:MM)
             if col in ["HORA INICIO", "HORA FIN"]:
+                # Método simple: cortar la cadena para mostrar solo HH:MM
+                df_formateado[col] = df_formateado[col].astype(str).apply(lambda x: x[:5] if ':' in x else x)
                 continue
             
             # La columna PORCENTAJE se maneja como decimal
