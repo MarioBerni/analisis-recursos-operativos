@@ -20,22 +20,47 @@ def procesar_archivo_excel(uploaded_file, EXCEL_SHEETS):
     """
     try:
         # Obtener las hojas disponibles en el archivo Excel
-        hojas_disponibles = obtener_hojas_excel(uploaded_file)
+        hojas_disponibles, es_valido, mensaje_error = obtener_hojas_excel(uploaded_file)
+        
+        if not es_valido:
+            return None, mensaje_error
         
         # Verificar si las hojas necesarias están presentes
         hojas_requeridas = [hoja for hoja in EXCEL_SHEETS if hoja in hojas_disponibles]
         
         if not hojas_requeridas:
+            # Limitar la cantidad de hojas a mostrar en el mensaje de error
+            # sin usar slice directamente
+            excel_sheets_mostrar = []
+            hojas_disponibles_mostrar = []
+            
+            # Tomar hasta 5 elementos de EXCEL_SHEETS
+            for i, hoja in enumerate(EXCEL_SHEETS):
+                if i < 5:
+                    excel_sheets_mostrar.append(hoja)
+                else:
+                    break
+            
+            # Tomar hasta 5 elementos de hojas_disponibles
+            for i, hoja in enumerate(hojas_disponibles):
+                if i < 5:
+                    hojas_disponibles_mostrar.append(hoja)
+                else:
+                    break
+            
             mensaje_error_hojas = (
                 f"El archivo Excel no contiene las hojas esperadas. "
-                f"Se esperan hojas como: {', '.join(EXCEL_SHEETS[:5])}... "
-                f"Las hojas encontradas son: {', '.join(hojas_disponibles[:5])}..."
+                f"Se esperan hojas como: {', '.join(excel_sheets_mostrar)}... "
+                f"Las hojas encontradas son: {', '.join(hojas_disponibles_mostrar)}..."
             )
             return None, mensaje_error_hojas
         
         # Leer el archivo Excel
         try:
-            df = leer_excel(uploaded_file)
+            df, es_valido, mensaje_error = leer_excel(uploaded_file)
+            
+            if not es_valido:
+                return None, mensaje_error
             
             # Formatear los datos
             df = formatear_datos(df)

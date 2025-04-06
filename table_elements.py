@@ -40,7 +40,7 @@ def generar_titulo_unidad(unidad):
         textColor=colors.navy,
         spaceAfter=0.5*cm,
         alignment=1,  # 1 = centro (0=izquierda, 2=derecha)
-        spaceBefore=1.5*cm  # Espacio antes del título
+        spaceBefore=2.0*cm  # Espacio aumentado antes del título
     )
     return Paragraph(f"<b>{nombre_unidad}</b>", titulo_estilo)
 
@@ -125,6 +125,7 @@ def crear_tabla_por_unidad(unidad, df_unidad, columnas_disponibles, estilos):
     
     elementos = []
     
+    
     # Agregar título de la unidad
     elementos.append(generar_titulo_unidad(unidad))
     
@@ -172,6 +173,7 @@ def crear_tabla_general(df_filtrado, columnas_disponibles, estilos):
     
     elementos = []
     
+    
     # Crear un título general para la tabla
     titulo_estilo = ParagraphStyle(
         'TituloGeneral',
@@ -180,7 +182,7 @@ def crear_tabla_general(df_filtrado, columnas_disponibles, estilos):
         textColor=colors.navy,
         spaceAfter=0.5*cm,
         alignment=1,  # 1 = centro
-        spaceBefore=1.0*cm
+        spaceBefore=2.0*cm  # Espacio aumentado antes del título
     )
     elementos.append(Paragraph("<b>Despliegues Operativos</b>", titulo_estilo))
     

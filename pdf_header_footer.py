@@ -115,9 +115,9 @@ def encabezado_pie_pagina(canvas, doc):
     canvas.setLineWidth(1)
     canvas.line(
         doc.leftMargin, 
-        page_height - doc.topMargin,
+        page_height - doc.topMargin + 0.2*cm, # Ajustado para reducir el espacio
         page_width - doc.rightMargin, 
-        page_height - doc.topMargin
+        page_height - doc.topMargin + 0.2*cm  # Ajustado para reducir el espacio
     )
     
     # Pie de página

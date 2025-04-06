@@ -47,6 +47,7 @@ def crear_reporte_cumplimiento(df, estilos, mes=None, año=None):
     # Lista de elementos para el PDF
     elementos = []
     
+    
     # Estilos para párrafos
     styles = getSampleStyleSheet()
     title_style = styles['Heading1']

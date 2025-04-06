@@ -34,7 +34,7 @@ def crear_documento_pdf(buffer):
         author="Sistema de Despliegues Operativos",
         leftMargin=1.5*cm,  # Margen izquierdo ampliado
         rightMargin=1.5*cm,  # Margen derecho ampliado
-        topMargin=3.0*cm,  # Margen superior reducido
+        topMargin=3.0*cm,  # Margen superior original
         bottomMargin=2.0*cm  # Margen inferior para el pie de página
     )
 

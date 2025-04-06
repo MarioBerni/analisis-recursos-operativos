@@ -200,11 +200,26 @@ def obtener_hojas_excel(archivo):
         tuple: (list, bool, str) - (lista_hojas, es_valido, mensaje_error)
     """
     try:
-        xls = pd.ExcelFile(archivo)
-        hojas_disponibles = xls.sheet_names
-        return hojas_disponibles, True, ""
+        # Verificar que el archivo no sea None
+        if archivo is None:
+            return [], False, "No se ha seleccionado ningún archivo"
+            
+        # Intentar leer el archivo Excel
+        try:
+            xls = pd.ExcelFile(archivo)
+            hojas_disponibles = xls.sheet_names
+            
+            # Verificar que haya al menos una hoja
+            if not hojas_disponibles:
+                return [], False, "El archivo Excel no contiene hojas"
+                
+            return hojas_disponibles, True, ""
+            
+        except Exception as e:
+            return [], False, f"Error al leer las hojas del archivo Excel: {str(e)}"
+            
     except Exception as e:
-        return [], False, f"Error al leer las hojas del archivo Excel: {str(e)}"
+        return [], False, f"Error inesperado al procesar el archivo: {str(e)}"
 
 def formatear_datos(df):
     """
