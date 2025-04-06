@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Local development settings
+.env
+.vscode/
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos generados por la aplicación
+*.pdf
+*.log
+
+# Archivos de datos de ejemplo (si son muy grandes o contienen datos sensibles)
+# Descomenta la siguiente línea si no quieres incluir los archivos CSV/Excel de ejemplo
+# *.csv
+# *.xlsx

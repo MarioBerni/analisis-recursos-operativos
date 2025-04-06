@@ -1,0 +1,7 @@
+streamlit
+pandas
+reportlab
+svglib
+fpdf2
+Pillow
+openpyxl
